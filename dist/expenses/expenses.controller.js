@@ -14,7 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExpensesController = void 0;
 const common_1 = require("@nestjs/common");
-const jwtauthGard_1 = require("../auth/jwtauthGard");
+const auth_guard_1 = require("../auth/auth.guard");
 const expense_dto_1 = require("../dto/expense.dto");
 const expenses_service_1 = require("./expenses.service");
 let ExpensesController = class ExpensesController {
@@ -30,7 +30,7 @@ let ExpensesController = class ExpensesController {
 };
 exports.ExpensesController = ExpensesController;
 __decorate([
-    (0, common_1.UseGuards)(jwtauthGard_1.JwtAuthGuard),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
@@ -39,7 +39,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ExpensesController.prototype, "create", null);
 __decorate([
-    (0, common_1.UseGuards)(jwtauthGard_1.JwtAuthGuard),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
