@@ -14,40 +14,41 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
-const login_dto_1 = require("../dto/login.dto");
-const user_dto_1 = require("../dto/user.dto");
-const users_service_1 = require("../users/users.service");
 const auth_service_1 = require("./auth.service");
 let AuthController = class AuthController {
-    constructor(authService, usersService) {
+    constructor(authService) {
         this.authService = authService;
-        this.usersService = usersService;
     }
-    async login(loginDto) {
-        return this.authService.login(loginDto);
+    async register(email, password) {
+        return this.authService.register(email, password);
     }
-    async register(createUserDto) {
-        return this.usersService.create(createUserDto);
+    async login(email, password) {
+        const user = await this.authService.validateUser(email, password);
+        if (user) {
+            return this.authService.login(user);
+        }
+        return null;
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Post)('login'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "login", null);
-__decorate([
     (0, common_1.Post)('register'),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Body)('email')),
+    __param(1, (0, common_1.Body)('password')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_dto_1.CreateUserDto]),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "register", null);
+__decorate([
+    (0, common_1.Post)('login'),
+    __param(0, (0, common_1.Body)('email')),
+    __param(1, (0, common_1.Body)('password')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "login", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [auth_service_1.AuthService,
-        users_service_1.UsersService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

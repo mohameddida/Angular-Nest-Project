@@ -14,7 +14,7 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const auth_module_1 = require("./auth/auth.module");
 const expenses_module_1 = require("./expenses/expenses.module");
-const users_module_1 = require("./users/users.module");
+const transactions_module_1 = require("./transactions/transactions.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -29,9 +29,9 @@ exports.AppModule = AppModule = __decorate([
                     uri: config.get('MONGODB_URI_NAME'),
                 }),
             }),
-            users_module_1.UsersModule,
             auth_module_1.AuthModule,
             expenses_module_1.ExpensesModule,
+            transactions_module_1.TransactionsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

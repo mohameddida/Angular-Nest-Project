@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ExpensesModule } from './expenses/expenses.module';
+import { TransactionsModule } from './transactions/transactions.module';
 import { UsersModule } from './users/users.module';
 
 
@@ -19,9 +20,9 @@ import { UsersModule } from './users/users.module';
 
       }),
     }),
-    UsersModule,
     AuthModule,
     ExpensesModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

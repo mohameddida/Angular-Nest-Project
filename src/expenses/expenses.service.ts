@@ -1,25 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Expense } from 'src/Schema/expense.schema';
-import { CreateExpenseDto } from 'src/dto/expense.dto';
+import { CreateExpenseDto } from './dto/create-expense.dto';
+import { UpdateExpenseDto } from './dto/update-expense.dto';
 
 @Injectable()
 export class ExpensesService {
-    constructor(@InjectModel('Expense') private expenseModel: Model<Expense>) { }
+  create(createExpenseDto: CreateExpenseDto) {
+    return 'This action adds a new expense';
+  }
 
-    async create(
-        createExpenseDto: CreateExpenseDto,
-        userId: string,
-    ): Promise<Expense> {
-        const createdExpense = new this.expenseModel({
-            ...createExpenseDto,
-            user: userId,
-        });
-        return createdExpense.save();
-    }
+  findAll() {
+    return `This action returns all expenses`;
+  }
 
-    async findAll(userId: string): Promise<Expense[]> {
-        return this.expenseModel.find({ user: userId }).exec();
-    }
+  findOne(id: number) {
+    return `This action returns a #${id} expense`;
+  }
+
+  update(id: number, updateExpenseDto: UpdateExpenseDto) {
+    return `This action updates a #${id} expense`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} expense`;
+  }
 }

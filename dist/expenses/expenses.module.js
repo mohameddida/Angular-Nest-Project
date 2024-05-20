@@ -8,12 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ExpensesModule = void 0;
 const common_1 = require("@nestjs/common");
-const config_1 = require("@nestjs/config");
-const jwt_1 = require("@nestjs/jwt");
-const mongoose_1 = require("@nestjs/mongoose");
-const expense_schema_1 = require("../Schema/expense.schema");
-const jwt_strategy_1 = require("../auth/jwt.strategy");
-const users_module_1 = require("../users/users.module");
 const expenses_controller_1 = require("./expenses.controller");
 const expenses_service_1 = require("./expenses.service");
 let ExpensesModule = class ExpensesModule {
@@ -21,22 +15,9 @@ let ExpensesModule = class ExpensesModule {
 exports.ExpensesModule = ExpensesModule;
 exports.ExpensesModule = ExpensesModule = __decorate([
     (0, common_1.Module)({
-        imports: [
-            jwt_1.JwtModule.registerAsync({
-                imports: [config_1.ConfigModule],
-                useFactory: async (configService) => ({
-                    secret: configService.get('JWT_SECRET_KEY'),
-                    signOptions: {
-                        expiresIn: configService.get('JWT_EXPIRE_KEY'),
-                    },
-                }),
-                inject: [config_1.ConfigService],
-            }),
-            users_module_1.UsersModule,
-            mongoose_1.MongooseModule.forFeature([{ name: 'Expense', schema: expense_schema_1.ExpenseSchema }]),
-        ],
-        providers: [expenses_service_1.ExpensesService, jwt_strategy_1.JwtStrategy],
         controllers: [expenses_controller_1.ExpensesController],
+        providers: [expenses_service_1.ExpensesService],
+        exports: [ExpensesModule],
     })
 ], ExpensesModule);
 //# sourceMappingURL=expenses.module.js.map

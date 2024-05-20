@@ -8,31 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const bcrypt = require("bcryptjs");
-const users_service_1 = require("../users/users.service");
+const mongoose_1 = require("@nestjs/mongoose");
+const bcrypt = require("bcrypt");
+const mongoose_2 = require("mongoose");
+const user_entity_1 = require("../users/entities/user.entity");
 let AuthService = class AuthService {
-    constructor(usersService, jwtService) {
-        this.usersService = usersService;
+    constructor(userModel, jwtService) {
+        this.userModel = userModel;
         this.jwtService = jwtService;
     }
-    async validateUser(email, pass) {
-        const user = await this.usersService.findOne(email);
-        if (user && await bcrypt.compare(pass, user.password)) {
-            const { password, ...result } = user;
-            return result;
+    async register(email, password) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new this.userModel({ email, password: hashedPassword });
+        return newUser.save();
+    }
+    async validateUser(email, password) {
+        const user = await this.userModel.findOne({ email });
+        if (user && (await bcrypt.compare(password, user.password))) {
+            return user;
         }
         return null;
     }
-    async login(loginDto) {
-        const user = await this.validateUser(loginDto.email, loginDto.password);
-        if (!user) {
-            throw new common_1.UnauthorizedException();
-        }
-        const payload = { email: user.email, sub: user.id };
+    async login(user) {
+        const payload = { email: user.email, sub: user._id };
         return {
             access_token: this.jwtService.sign(payload),
         };
@@ -41,7 +46,8 @@ let AuthService = class AuthService {
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [users_service_1.UsersService,
+    __param(0, (0, mongoose_1.InjectModel)(user_entity_1.User.name)),
+    __metadata("design:paramtypes", [mongoose_2.Model,
         jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

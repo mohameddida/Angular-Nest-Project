@@ -1,24 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import * as bcrypt from 'bcryptjs';
-import { Model } from 'mongoose';
-import { User } from '../Schema/user.schema';
-import { CreateUserDto } from '../dto/user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('User') private userModel: Model<User>) { }
-
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
-    const createdUser = new this.userModel({
-      ...createUserDto,
-      password: hashedPassword,
-    });
-    return createdUser.save();
+  create(createUserDto: CreateUserDto) {
+    return 'This action adds a new user';
   }
 
-  async findOne(email: string): Promise<User | undefined> {
-    return this.userModel.findOne({ email }).exec();
+  findAll() {
+    return `This action returns all users`;
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} user`;
+  }
+
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return `This action updates a #${id} user`;
+  }
+
+  remove(id: number) {
+    return `This action removes a #${id} user`;
   }
 }

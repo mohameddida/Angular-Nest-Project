@@ -4,5 +4,5 @@ export declare class JwtStrategy {
     private readonly jwtService;
     private readonly usersService;
     constructor(jwtService: JwtService, usersService: UsersService);
-    validate(token: string): Promise<import("../Schema/user.schema").User>;
+    validate(token: string): Promise<string>;
 }
